@@ -34,7 +34,51 @@ var Pacman = function(game, key) {
     this.sprite.body.setSize(16, 16, 0, 0);
     
     this.sprite.play('munch');
-    this.move(Phaser.LEFT);    
+    this.move(Phaser.LEFT);
+
+    setInterval(this.chooseRandomDirection.bind(this), this.KEY_COOLING_DOWN_TIME);
+};
+
+
+Pacman.prototype.chooseRandomDirection = function() {
+    var want2go= [Phaser.RIGHT, Phaser.LEFT, Phaser.DOWN, Phaser.UP][Math.floor(Math.random() * 4)];
+    this.keyPressTimer = this.game.time.time + this.KEY_COOLING_DOWN_TIME;
+    this.checkDirection(want2go);
+};
+
+Pacman.prototype.checkKeys = function(cursors) {
+    if (cursors.left.isDown ||
+        cursors.right.isDown ||
+        cursors.up.isDown ||
+        cursors.down.isDown) {
+        this.keyPressTimer = this.game.time.time + this.KEY_COOLING_DOWN_TIME;
+    }
+
+    if (cursors.left.isDown && this.current !== Phaser.LEFT)
+    {
+        this.want2go = Phaser.LEFT;
+    }
+    else if (cursors.right.isDown && this.current !== Phaser.RIGHT)
+    {
+        this.want2go = Phaser.RIGHT;
+    }
+    else if (cursors.up.isDown && this.current !== Phaser.UP)
+    {
+        this.want2go = Phaser.UP;
+    }
+    else if (cursors.down.isDown && this.current !== Phaser.DOWN)
+    {
+        this.want2go = Phaser.DOWN;
+    }
+
+    if (this.game.time.time > this.keyPressTimer)
+    {
+        //  This forces them to hold the key down to turn the corner
+        this.turning = Phaser.NONE;
+        this.want2go = Phaser.NONE;
+    } else {
+        this.checkDirection(this.want2go);
+    }
 };
 
 Pacman.prototype.move = function(direction) {
@@ -114,40 +158,9 @@ Pacman.prototype.update = function() {
     }
 };
 
-Pacman.prototype.checkKeys = function(cursors) {
-    if (cursors.left.isDown ||
-        cursors.right.isDown ||
-        cursors.up.isDown ||
-        cursors.down.isDown) {
-        this.keyPressTimer = this.game.time.time + this.KEY_COOLING_DOWN_TIME;
-    }
 
-    if (cursors.left.isDown && this.current !== Phaser.LEFT)
-    {
-        this.want2go = Phaser.LEFT;
-    }
-    else if (cursors.right.isDown && this.current !== Phaser.RIGHT)
-    {
-        this.want2go = Phaser.RIGHT;
-    }
-    else if (cursors.up.isDown && this.current !== Phaser.UP)
-    {
-        this.want2go = Phaser.UP;
-    }
-    else if (cursors.down.isDown && this.current !== Phaser.DOWN)
-    {
-        this.want2go = Phaser.DOWN;
-    }
 
-    if (this.game.time.time > this.keyPressTimer)
-    {
-        //  This forces them to hold the key down to turn the corner
-        this.turning = Phaser.NONE;
-        this.want2go = Phaser.NONE;
-    } else {
-        this.checkDirection(this.want2go);    
-    }
-};
+
 
 Pacman.prototype.eatDot = function(pacman, dot) {
     dot.kill();

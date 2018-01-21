@@ -121,7 +121,7 @@ PacmanGame.prototype = {
         this.dots.setAll('y', 6, false, false, 1);
 
         //  Pacman should collide with everything except the safe tile
-        //this.map.setCollisionByExclusion([this.safetile], true, this.layer);
+        this.map.setCollisionByExclusion([this.safetile], true, this.layer);
 
 		// Our hero
         this.pacman = new Pacman(this, "pacman");
