@@ -23,10 +23,7 @@ var PacmanGame = function (game) {
     this.threshold = 3;
     
     this.SPECIAL_TILES = [
-        { x: 12, y: 11 },
-        { x: 15, y: 11 },
-        { x: 12, y: 23 },
-        { x: 15, y: 23 }
+
     ];
     
     this.TIME_MODES = [
@@ -124,7 +121,7 @@ PacmanGame.prototype = {
         this.dots.setAll('y', 6, false, false, 1);
 
         //  Pacman should collide with everything except the safe tile
-        this.map.setCollisionByExclusion([this.safetile], true, this.layer);
+        //this.map.setCollisionByExclusion([this.safetile], true, this.layer);
 
 		// Our hero
         this.pacman = new Pacman(this, "pacman");
@@ -144,11 +141,11 @@ PacmanGame.prototype = {
         this.changeModeTimer = this.time.time + this.TIME_MODES[this.currentMode].time;
         
         // Ghosts
-        this.blinky = new Ghost(this, "ghosts", "blinky", {x:13, y:11}, Phaser.RIGHT);
+        /*this.blinky = new Ghost(this, "ghosts", "blinky", {x:13, y:11}, Phaser.RIGHT);
         this.pinky = new Ghost(this, "ghosts", "pinky", {x:15, y:14}, Phaser.LEFT);
         this.inky = new Ghost(this, "ghosts", "inky", {x:14, y:14}, Phaser.RIGHT);
         this.clyde = new Ghost(this, "ghosts", "clyde", {x:17, y:14}, Phaser.LEFT);
-        this.ghosts.push(this.clyde, this.pinky, this.inky, this.blinky);
+        this.ghosts.push(this.clyde, this.pinky, this.inky, this.blinky);*/
         
         this.sendExitOrder(this.pinky);
     },
@@ -228,7 +225,7 @@ PacmanGame.prototype = {
             this.overflowText.text = "";
         }
         
-        if (!this.pacman.isDead) {
+        /*if (!this.pacman.isDead) {
             for (var i=0; i<this.ghosts.length; i++) {
                 if (this.ghosts[i].mode !== this.ghosts[i].RETURNING_HOME) {
                     this.physics.arcade.overlap(this.pacman.sprite, this.ghosts[i].ghost, this.dogEatsDog, null, this);
@@ -265,7 +262,7 @@ PacmanGame.prototype = {
                 }
                 console.log("new mode:", this.TIME_MODES[this.currentMode].mode, this.TIME_MODES[this.currentMode].time);
             }
-        }
+        }*/
         
         this.pacman.update();
 		this.updateGhosts();
@@ -337,7 +334,7 @@ PacmanGame.prototype = {
     },
     
     sendExitOrder: function(ghost) {
-        ghost.mode = this.clyde.EXIT_HOME;
+        //ghost.mode = this.clyde.EXIT_HOME;
     },
     
     sendScatterOrder: function() {
