@@ -1,6 +1,6 @@
 var game = new Phaser.Game(448, 496, Phaser.AUTO, "game");
 
-var PacmanGame = function (game) {    
+var PacmanGame = function (game) {
     this.map = null;
     this.layer = null;
     
@@ -76,6 +76,9 @@ var PacmanGame = function (game) {
     this.lastKeyPressed = 0;
     
     this.game = game;
+
+    this.enemy = true;
+
 };
 
 PacmanGame.prototype = {
@@ -88,6 +91,8 @@ PacmanGame.prototype = {
         Phaser.Canvas.setImageRenderingCrisp(this.game.canvas); // full retro mode, i guess ;)
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
+
+
     },
 
     preload: function () {
@@ -144,13 +149,18 @@ PacmanGame.prototype = {
         this.changeModeTimer = this.time.time + this.TIME_MODES[this.currentMode].time;
         
         // Ghosts
-        this.blinky = new Ghost(this, "ghosts", "blinky", {x:13, y:11}, Phaser.RIGHT);
-        this.pinky = new Ghost(this, "ghosts", "pinky", {x:15, y:14}, Phaser.LEFT);
-        this.inky = new Ghost(this, "ghosts", "inky", {x:14, y:14}, Phaser.RIGHT);
-        this.clyde = new Ghost(this, "ghosts", "clyde", {x:17, y:14}, Phaser.LEFT);
-        this.ghosts.push(this.clyde, this.pinky, this.inky, this.blinky);
+        if (this.enemy){
+            this.blinky = new Ghost(this, "ghosts", "blinky", {x:13, y:11}, Phaser.RIGHT);
+            this.pinky = new Ghost(this, "ghosts", "pinky", {x:15, y:14}, Phaser.LEFT);
+            this.inky = new Ghost(this, "ghosts", "inky", {x:14, y:14}, Phaser.RIGHT);
+            this.clyde = new Ghost(this, "ghosts", "clyde", {x:17, y:14}, Phaser.LEFT);
+            this.ghosts.push(this.clyde, this.pinky, this.inky, this.blinky);
+
+            this.sendExitOrder(this.pinky);
+        }
+
         
-        this.sendExitOrder(this.pinky);
+
     },
 
     checkKeys: function () {
@@ -228,7 +238,7 @@ PacmanGame.prototype = {
             this.overflowText.text = "";
         }
         
-        if (!this.pacman.isDead) {
+        if (!this.pacman.isDead && this.enemy) {
             for (var i=0; i<this.ghosts.length; i++) {
                 if (this.ghosts[i].mode !== this.ghosts[i].RETURNING_HOME) {
                     this.physics.arcade.overlap(this.pacman.sprite, this.ghosts[i].ghost, this.dogEatsDog, null, this);
@@ -268,7 +278,7 @@ PacmanGame.prototype = {
         }
         
         this.pacman.update();
-		this.updateGhosts();
+		if (this.enemy) this.updateGhosts();
         
         this.checkKeys();
         this.checkMouse();
