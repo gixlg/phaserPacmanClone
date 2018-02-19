@@ -19,7 +19,7 @@ var PacmanGame = function (game) {
     this.ghosts = [];
 
     this.safetile = 14;
-    this.gridsize = 16;       
+    this.gridsize = 16;
     this.threshold = 3;
     
     this.SPECIAL_TILES = [
@@ -77,7 +77,7 @@ var PacmanGame = function (game) {
     
     this.game = game;
 
-    this.enemy = true;
+    this.enemy = false;
 
 };
 
@@ -92,8 +92,29 @@ PacmanGame.prototype = {
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
+    },
+
+    getInput: function () {
+
+        this.pills.forEach(function (pill, index) {
+            var distance = this.getDistance(this.pacman.sprite, pill);
+            console.log("distance"+index + " "+ distance);
+        }, this);
+
 
     },
+
+    getDistance: function (element1, element2) {
+        var x1 = element1.body.position.x;
+        var y1 = element1.body.position.y;
+
+        var x2 = element2.body.position.x;
+        var y2 = element2.body.position.y;
+
+        return Math.sqrt( Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2) );
+    },
+
+
 
     preload: function () {
         //  We need this because the assets are on Amazon S3
