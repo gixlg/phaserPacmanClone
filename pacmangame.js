@@ -1,4 +1,4 @@
-var game = new Phaser.Game(448, 496, Phaser.AUTO, "game");
+
 
 var PacmanGame = function (game) {
     this.map = null;
@@ -377,5 +377,3 @@ PacmanGame.prototype = {
         }
     }
 };
-
-game.state.add('Game', PacmanGame, true);

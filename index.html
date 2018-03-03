@@ -18,8 +18,41 @@
 </head>
 <body>
 
+    <style>
+        html, body { height: 100%; padding: 0; margin: 0; }
+        .p-game { width: 50%; height: 50%; float: left; }
+        .p2 { background: #AAA; }
+        .p3 { background: #777; }
+        .p4 { background: #444; }
+
+    </style>
     <script src="Pacman.js"></script>
     <script src="Ghost.js"></script>
     <script src="pacmangame.js"></script>
+
+    <script>
+        var games = [];
+        for (i = 1; i <= 4; i++) {
+            var div = document.createElement('div');
+            div.setAttribute('class', 'p-game p'+i);
+            div.setAttribute('id', 'phaser-example-'+i);
+            document.querySelector("body").appendChild(div);
+
+
+            var game = new Phaser.Game(448, 496, Phaser.AUTO, 'phaser-example-'+i);
+            game.state.add('Game', PacmanGame, true);
+            games.push(game);
+        }
+
+
+
+    </script>
+
+    <!--div class="p-game p1" id="phaser-example-1"></div>
+    <div class="p-game p2" id="phaser-example-2"></div>
+    <div class="p-game p3" id="phaser-example-3"></div>
+    <div class="p-game p4" id="phaser-example-4"></div-->
+
+
 </body>
 </html>
